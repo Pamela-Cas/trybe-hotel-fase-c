@@ -32,7 +32,10 @@ namespace TrybeHotel.Repository
                                          CityId = hotel.CityId,
                                          CityName = (from c in _context.Cities
                                                      where c.CityId == hotel.CityId
-                                                     select c.Name).FirstOrDefault()
+                                                     select c.Name).FirstOrDefault(),
+                                         State = (from c in _context.Cities
+                                          where c.CityId == hotel.CityId
+                                          select c.State).FirstOrDefault()
                                      }).FirstOrDefault()
                         };
             return rooms;
