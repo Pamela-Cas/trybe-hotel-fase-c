@@ -32,10 +32,7 @@ namespace TrybeHotel.Repository
                                          CityId = hotel.CityId,
                                          CityName = (from c in _context.Cities
                                                      where c.CityId == hotel.CityId
-                                                     select c.Name).FirstOrDefault(),
-                                         State = (from c in _context.Cities
-                                          where c.CityId == hotel.CityId
-                                          select c.State).FirstOrDefault()
+                                                     select c.Name).FirstOrDefault()
                                      }).FirstOrDefault()
                         };
             return rooms;
@@ -43,7 +40,7 @@ namespace TrybeHotel.Repository
 
         // 8. Refatore o endpoint POST /room
         public RoomDto AddRoom(Room room) {
-             _context.Rooms.Add(room);
+            _context.Rooms.Add(room);
             _context.SaveChanges();
             return new RoomDto
             {
@@ -57,15 +54,14 @@ namespace TrybeHotel.Repository
                     Name = h.Name,
                     Address = h.Address,
                     CityId = h.CityId,
-                    CityName = _context.Cities.Where(c => c.CityId == h.CityId).Select(c => c.Name).FirstOrDefault()
+                    CityName = _context.Cities.Where(c => c.CityId == h.CityId).Select(c => c.Name).FirstOrDefault(),
+                    State = _context.Cities.Where(c => c.CityId == h.CityId).Select(c => c.State).FirstOrDefault()
                 }).FirstOrDefault()
             };
         }
 
         public void DeleteRoom(int RoomId) {
-           var room = _context.Rooms.Find(RoomId);
-           _context.Rooms.Remove(room);
-           _context.SaveChanges();
+           throw new NotImplementedException();
         }
     }
 }

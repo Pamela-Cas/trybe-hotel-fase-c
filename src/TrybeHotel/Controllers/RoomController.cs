@@ -18,16 +18,22 @@ namespace TrybeHotel.Controllers
         }
 
         [HttpGet("{HotelId}")]
-        public IActionResult GetRoom(int HotelId){
+        public IActionResult GetRoom(int HotelId)
+        {
             return Ok(_repository.GetRooms(HotelId));
         }
 
         [HttpPost]
-        public IActionResult PostRoom([FromBody] Room room){
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "Admin")]
+        public IActionResult PostRoom([FromBody] Room room)
+        {
             return Created("", _repository.AddRoom(room));
         }
 
         [HttpDelete("{RoomId}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "Admin")]
         public IActionResult Delete(int RoomId)
         {
             _repository.DeleteRoom(RoomId);
