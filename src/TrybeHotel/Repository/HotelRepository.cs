@@ -14,13 +14,16 @@ namespace TrybeHotel.Repository
         //  5. Refatore o endpoint GET /hotel
         public IEnumerable<HotelDto> GetHotels()
         {
-             return _context.Hotels.Select(h => new HotelDto()
-			{
-				HotelId = h.HotelId,
-				Name = h.Name,
-				Address = h.Address,
-				CityId = h.CityId,
-			});
+            return _context.Hotels.Select(h => new HotelDto()
+            {
+                HotelId = h.HotelId,
+                Name = h.Name,
+                Address = h.Address,
+                CityId = h.CityId,
+                State = h.City.State,
+
+
+            });
         }
 
         // 6. Refatore o endpoint POST /hotel
