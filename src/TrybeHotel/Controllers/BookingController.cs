@@ -11,7 +11,7 @@ namespace TrybeHotel.Controllers
 {
     [ApiController]
     [Route("booking")]
-  
+
     public class BookingController : Controller
     {
         private readonly IBookingRepository _repository;
@@ -23,8 +23,9 @@ namespace TrybeHotel.Controllers
         [HttpPost]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "Client")]
-        public IActionResult Add([FromBody] BookingDtoInsert bookingInsert){
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
+        public IActionResult Add([FromBody] BookingDtoInsert bookingInsert)
+        {
+            var email = User?.FindFirst(ClaimTypes.Email)?.Value;
             var bookingResponse = _repository.Add(bookingInsert, email!);
 
             if (bookingResponse == null)
@@ -39,16 +40,19 @@ namespace TrybeHotel.Controllers
         [HttpGet("{Bookingid}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "Client")]
-        public IActionResult GetBooking(int Bookingid){
-            var email = User.FindFirst(ClaimTypes.Email)?.Value;
-            var bookingResponse = _repository.GetBooking(Bookingid, email!);
+        public IActionResult GetBooking(int Bookingid)
+        {
 
-            if (bookingResponse == null)
+            try
             {
-                return Unauthorized();
+                var email = User.FindFirst(ClaimTypes.Email).Value;
+                var bookingResponse = _repository.GetBooking(Bookingid, email);
+                return Ok(bookingResponse);
             }
 
-            return Ok(bookingResponse);
+            catch
+            { return Unauthorized(new { message = "booking not found" }); }
+
         }
     }
 }
