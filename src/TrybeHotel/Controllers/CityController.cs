@@ -30,7 +30,8 @@ namespace TrybeHotel.Controllers
         [HttpPut]
         public IActionResult PutCity([FromBody] City city)
         {
-            throw new NotImplementedException();
+            var cityDto = _repository.UpdateCity(city);
+            return Ok(cityDto);
         }
     }
 }
