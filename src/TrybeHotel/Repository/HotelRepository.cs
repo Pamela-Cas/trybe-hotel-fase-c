@@ -20,9 +20,7 @@ namespace TrybeHotel.Repository
                 Name = h.Name,
                 Address = h.Address,
                 CityId = h.CityId,
-                State = h.City.State,
-
-
+                State = h.City!.State,
             });
         }
 
@@ -31,15 +29,17 @@ namespace TrybeHotel.Repository
         {
             _context.Hotels.Add(hotel);
             _context.SaveChanges();
+            
+            var city = _context.Cities.FirstOrDefault(c => c.CityId == hotel.CityId) ?? throw new InvalidOperationException("City not found.");
+            
             return new HotelDto
             {
                 HotelId = hotel.HotelId,
                 Name = hotel.Name,
                 Address = hotel.Address,
                 CityId = hotel.CityId,
-                CityName = (from c in _context.Cities
-                            where c.CityId == hotel.CityId
-                            select c.Name).FirstOrDefault()
+                CityName = city.Name, 
+                State = city.State
             };
         }
     }
