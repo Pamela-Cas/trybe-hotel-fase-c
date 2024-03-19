@@ -20,13 +20,27 @@ namespace TrybeHotel.Controllers
         
         [HttpGet]
         public IActionResult GetUsers(){
-            throw new NotImplementedException();
+            var users = _repository.GetUsers();
+            return Ok(users);
         }
 
         [HttpPost]
         public IActionResult Add([FromBody] UserDtoInsert user)
         {
-            throw new NotImplementedException();
+            try
+            {
+             var verifyEmail = _repository.GetUserByEmail(user.Email!);
+
+            if (verifyEmail != null ) throw new Exception("User email already exists");
+            
+                var newUser = _repository.Add(user);
+                return Created("", newUser);
+            }
+            catch (Exception e){
+                return StatusCode(409, new {
+                    message = e.Message
+                });
+            }
         }
     }
 }
