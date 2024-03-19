@@ -18,7 +18,8 @@ namespace TrybeHotel.Repository
             {
                 CityId = c.CityId,
                 Name = c.Name,
-            });
+                State = c.State,
+            }).ToList();
         }
 
         // 2. Refatore o endpoint POST /city
